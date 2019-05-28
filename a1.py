@@ -1,60 +1,62 @@
-import re
+import sys
+import numpy as np
+from nltk import download
 from nltk.corpus import stopwords
+import re
 import random
 
 
+if __name__ == "__main__":
+    download('stopwords')
+    input_path = sys.argv[1]
 
+    """
+    Tokenize the input file here
+    Create train, val, and test sets
+    """
+    train_list = []
+    val_list = []
+    test_list = []
+    train_list_no_stopword = []
+    val_list_no_stopword = []
+    test_list_no_stopword = []
 
-def main():
-    neg_stopwith = []
-    neg_stopless = []
-
-    neg_stopwith_train = []
-    neg_stopwith_vali = []
-    neg_stopwith_test = []
-    neg_stopless_train = []
-    neg_stopless_vali = []
-    neg_stopless_test = []
-
-
-    with open("../neg.txt") as f:
+    with open(input_path) as f:
         stop_words = set(stopwords.words('english'))
         for line in f:
-            for t in line.split(" "):
-                t = re.sub(r"[!\"#$%&\(\)\*\+/:;<=>@\[\\\]^`{|}~(\t)(\n)]","",t)
+            no_stopword = []
+            with_stopword = []
+            line = re.sub(r"[!\"#$%&\(\)\*\+/:;<=>@\[\\\]^`{|}~(\t)(\n)]"," ",line).lower()
+            # for t in line.split(" "):
+            for t in list(filter(lambda x: x!=" " and x!="",re.split("([\W])",line))):
                 if t != "":
                     if t not in stop_words:
-                        neg_stopless.append(t)
-                    neg_stopwith.append(t)
-
-        for token in neg_stopwith:
+                        no_stopword.append(t)
+                    with_stopword.append(t)
             random_factor = random.randint(0,9)
             if(random_factor < 8):
-                neg_stopwith_train.append(token)
+                train_list.append(with_stopword)
+                train_list_no_stopword.append(no_stopword)
             elif(random_factor < 9):
-                neg_stopwith_vali.append(token)
+                val_list.append(with_stopword)
+                val_list_no_stopword.append(no_stopword)
             else:
-                neg_stopwith_test.append(token)
+                test_list.append(with_stopword)
+                test_list_no_stopword.append(no_stopword)
 
-        print(len(neg_stopwith))
-        print(len(neg_stopwith_train))
-        print(len(neg_stopwith_vali))
-        print(len(neg_stopwith_test))
+    print("finish proccessing")
+    f.close()
+    # sample_tokenized_list = [["Hetest_list_no_stopwordllo", "World", "."], ["Good", "bye"]]
 
-        for token in neg_stopless:
-            random_factor = random.randint(0,9)
-            if(random_factor < 8):
-                neg_stopless_train.append(token)
-            elif(random_factor < 9):
-                neg_stopless_vali.append(token)
-            else:
-                neg_stopless_test.append(token)
+    suffix = input_path[-7:-4]
 
-        print(len(neg_stopless))
-        print(len(neg_stopless_train))
-        print(len(neg_stopless_vali))
-        print(len(neg_stopless_test))
+    np.savetxt("train_"+ suffix+ ".csv", train_list, delimiter=",", fmt='%s')
+    np.savetxt("val_"+ suffix+ ".csv", val_list, delimiter=",", fmt='%s')
+    np.savetxt("test_"+ suffix+ ".csv", test_list, delimiter=",", fmt='%s')
 
-
-if __name__ == "__main__":
-    main()
+    np.savetxt("train_no_stopword_"+ suffix+ ".csv", train_list_no_stopword,
+               delimiter=",", fmt='%s')
+    np.savetxt("val_no_stopword_"+ suffix+ ".csv", val_list_no_stopword,
+               delimiter=",", fmt='%s')
+    np.savetxt("test_no_stopword_"+ suffix+ ".csv", test_list_no_stopword,
+               delimiter=",", fmt='%s')
