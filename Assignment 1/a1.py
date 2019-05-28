@@ -28,7 +28,7 @@ if __name__ == "__main__":
             with_stopword = []
             line = re.sub(r"[!\"#$%&\(\)\*\+/:;<=>@\[\\\]^`{|}~(\t)(\n)]"," ",line).lower()
             # for t in line.split(" "):
-            for t in list(filter(lambda x: x!=" " and x!="",re.split("([\W])",line))):
+            for t in list(filter(lambda x: x!=" " and x!="" and x!=None,re.split("(-+)(?!-)|([\W])",line))):
                 if t != "":
                     if t not in stop_words:
                         no_stopword.append(t)
