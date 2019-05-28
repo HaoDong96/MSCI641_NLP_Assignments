@@ -3,7 +3,6 @@ import numpy as np
 from nltk import download
 from nltk.corpus import stopwords
 import re
-import random
 
 
 if __name__ == "__main__":
@@ -14,6 +13,8 @@ if __name__ == "__main__":
     Tokenize the input file here
     Create train, val, and test sets
     """
+    no_stopword_list = []
+    with_stopword_list = []
     train_list = []
     val_list = []
     test_list = []
@@ -33,16 +34,22 @@ if __name__ == "__main__":
                     if t not in stop_words:
                         no_stopword.append(t)
                     with_stopword.append(t)
-            random_factor = random.randint(0,9)
-            if(random_factor < 8):
-                train_list.append(with_stopword)
-                train_list_no_stopword.append(no_stopword)
-            elif(random_factor < 9):
-                val_list.append(with_stopword)
-                val_list_no_stopword.append(no_stopword)
-            else:
-                test_list.append(with_stopword)
-                test_list_no_stopword.append(no_stopword)
+            no_stopword_list.append(no_stopword)
+            with_stopword_list.append(with_stopword)
+        
+
+        np.random.shuffle(no_stopword_list)
+        np.random.shuffle(with_stopword_list)
+
+        length = len(with_stopword_list)
+        train_list = with_stopword_list[:int(length*0.8)]
+        val_list = with_stopword_list[int(length*0.8):int(length*0.9)]
+        test_list = with_stopword_list[int(length*0.9):]
+
+        length = len(no_stopword_list)
+        train_list_no_stopword = no_stopword_list[:int(length*0.8)]
+        val_list_no_stopword = no_stopword_list[int(length*0.8):int(length*0.9)]
+        test_list_no_stopword = no_stopword_list[int(length*0.9):]
 
     print("finish proccessing")
     f.close()
