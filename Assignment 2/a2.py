@@ -17,7 +17,13 @@ def save_into_list(f, data, pos_or_neg, target):
         target.append(pos_or_neg)
 
 def classify(nr, train_data,train_target,test_data,test_target,val_data,val_target):
-    print(nr)
+    if nr == (1,1):
+        print('unigram')
+    elif nr == (2,2):
+        print('bigram')
+    else:
+        print('unigram + bigram')
+
     # vectorize data by fit and transform
     vectorizer = CountVectorizer(ngram_range = nr)
     train_data = vectorizer.fit_transform(train_data)
@@ -28,7 +34,7 @@ def classify(nr, train_data,train_target,test_data,test_target,val_data,val_targ
     # get the alpha with max accuracy
     max_accu = 0
     max_alpha = 0
-    for alpha in np.arange(0.05, 10, .05):
+    for alpha in np.arange(0.05, 5 , .05):
         nbc = MultinomialNB(alpha = alpha)
         nbc.fit(train_data, train_target) 
         predict = nbc.predict(val_data) 
@@ -39,7 +45,6 @@ def classify(nr, train_data,train_target,test_data,test_target,val_data,val_targ
         if(count/len(val_target) > max_accu):
             max_accu = count/len(val_target)
             max_alpha = alpha
-    print(max_accu)
 
     # use the max accuracy to build the model and test it
     nbc = MultinomialNB(alpha = max_alpha)
@@ -73,7 +78,6 @@ if __name__ == "__main__":
         else:
             save_into_list(f, val_data, pos_or_neg, val_target)
         f.close()
-    print("finish processing")
     
 
     # classify,validate and test for unigram, bigram, and unigram+bigram
