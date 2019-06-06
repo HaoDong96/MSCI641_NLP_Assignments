@@ -6,7 +6,7 @@ from sklearn.pipeline import Pipeline
 import numpy as np
 
 def save_into_list(f, data, pos_or_neg, target):
-
+    # save each line into list
     for line in f.readlines():
         line_str = ""
         line = line[1:-2].split(r", ")
@@ -18,14 +18,17 @@ def save_into_list(f, data, pos_or_neg, target):
 
 def classify(nr, train_data,train_target,test_data,test_target,val_data,val_target):
     print(nr)
+    # vectorize data by fit and transform
     vectorizer = CountVectorizer(ngram_range = nr)
     train_data = vectorizer.fit_transform(train_data)
     val_data = vectorizer.transform(val_data)
     test_data = vectorizer.transform(test_data)
 
+    # build the model with train_data and validate the model with val_data
+    # get the alpha with max accuracy
     max_accu = 0
     max_alpha = 0
-    for alpha in np.arange(0.1, 3, .1):
+    for alpha in np.arange(0.05, 10, .05):
         nbc = MultinomialNB(alpha = alpha)
         nbc.fit(train_data, train_target) 
         predict = nbc.predict(val_data) 
@@ -38,6 +41,7 @@ def classify(nr, train_data,train_target,test_data,test_target,val_data,val_targ
             max_alpha = alpha
     print(max_accu)
 
+    # use the max accuracy to build the model and test it
     nbc = MultinomialNB(alpha = max_alpha)
     nbc.fit(train_data, train_target) 
     predict = nbc.predict(test_data) 
@@ -49,7 +53,6 @@ def classify(nr, train_data,train_target,test_data,test_target,val_data,val_targ
 
 
 if __name__ == "__main__":
-
     train_data = []
     train_target = []
     val_data = []
@@ -57,6 +60,7 @@ if __name__ == "__main__":
     test_data = []
     test_target = []
 
+    # save data into list _data, save neg/pos into list _target
     for i in range(1,len(sys.argv)):
         f = open(sys.argv[i],'r') 
         file_name = sys.argv[i]
@@ -72,7 +76,7 @@ if __name__ == "__main__":
     print("finish processing")
     
 
-
+    # classify,validate and test for unigram, bigram, and unigram+bigram
     ngram_range = [(1,1),(2,2),(1,2)]
     for nr in ngram_range:
         classify(nr, train_data,train_target,test_data,test_target,val_data,val_target)
