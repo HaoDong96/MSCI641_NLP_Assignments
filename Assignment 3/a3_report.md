@@ -49,6 +49,17 @@ impressive 0.46779313683509827
 
 
 
+Nearly all words most similar to "good" are positive, but not all, including:
+
+'bad', 'terrible', 'poor'.
+
+I think this happens for several reasons:
+
+1. The reviewers are comparing different products in their reviews, that means, one product is "good", the other is "bad" or "terrible".
+2. People may review the product as "not bad", or some other double negative expression, which leads to these negative words appear in the same sentence with "good".
+
+Ditto for "bad".
+
 
 
 
