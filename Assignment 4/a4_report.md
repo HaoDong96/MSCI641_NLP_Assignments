@@ -29,7 +29,7 @@
 
 - __What effect does dropout have on the results?__
 
-  With _dropout_, the model performs __better__.   _dropout_ prevent over-fitting, reducing interdependent learning amongst the neurons. It helps three action functions, especially _sigmoid_, perform better.
+  With _dropout_, the model performs __better__.   _dropout_ prevent over-fitting, reducing interdependent learning amongst the neurons. It helps three action functions, especially _sigmoid_, perform better. There isn't a rule for dropout rate, it is found that 0.5 as dropout rate performs best for my data.
 
   
 
