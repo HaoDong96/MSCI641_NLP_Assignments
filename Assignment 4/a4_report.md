@@ -5,7 +5,7 @@
 | ReLU | false    | true    | 77.38 |
 | ReLU | false | false    | 75.22 |
 | sigmoid | true    | true    | 74.14 |
-| sigmoid | true    | false    | 50.00 |
+| sigmoid | true    | false    | 78.08 |
 | sigmoid | false    | true    | 79.44 |
 | sigmoid | false | false    | 75.52 |
 | tanh | true    | true    | 74.62 |
