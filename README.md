@@ -1,1 +1,2 @@
 # MSCI641
+Assignments
